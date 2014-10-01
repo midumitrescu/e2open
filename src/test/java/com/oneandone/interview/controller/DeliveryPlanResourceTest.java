@@ -34,7 +34,7 @@ public class DeliveryPlanResourceTest {
 
     @Test
     public void testDeliveryPlans() throws Exception {
-        mockMvc.perform(get("/rest/deliveryPlans").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/deliveryPlans"))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.items").isArray());
     }

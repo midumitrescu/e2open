@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/deliveryPlans")
 public class DeliveryPlanResource extends AbstractAutoPaginatingResource<DeliveryPlanItem> {
 
     private final DeliveryPlanService deliveryPlanService;
@@ -33,7 +34,7 @@ public class DeliveryPlanResource extends AbstractAutoPaginatingResource<Deliver
         this.deliveryPlanService = deliveryPlanService;
     }
 
-    @RequestMapping(value = "/deliveryPlans", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<PageOf<DeliveryPlanItem>> listDeliveryPlans(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                   @RequestParam(value = "size", defaultValue = "-1", required = false) int size,
@@ -42,7 +43,7 @@ public class DeliveryPlanResource extends AbstractAutoPaginatingResource<Deliver
         Long totalNumberOfElements = deliveryPlanService.readDeliveryPlansNumber();
 
         int preferredPageSize = idealPageSize(size);
-        PaginationSupport paginationSupport = paginationBuilder().pageNumber(page).maxPageSize(preferredPageSize).totalNumberOfElements(defaultPageSize()).build();
+        PaginationSupport paginationSupport = paginationBuilder().pageNumber(page).maxPageSize(preferredPageSize).totalNumberOfElements(totalNumberOfElements.intValue()).build();
 
         Collection<DeliveryPlanItem> deliveryPlanItems = deliveryPlanService.readDeliveryPlans(paginationSupport, sort);
 
@@ -56,7 +57,7 @@ public class DeliveryPlanResource extends AbstractAutoPaginatingResource<Deliver
         return ImmutablePaginationSupport.Builder.instance();
     }
 
-    @RequestMapping(value = "/deliveryPlans/{deliveryNumber}")
+    @RequestMapping(value = "/{deliveryNumber}")
     @ResponseBody
     public HttpEntity<DeliveryPlanItem> getDeliveryPlan(@PathVariable Long deliveryNumber) {
         DeliveryPlanItem singleDeliveryPlanItem = deliveryPlanService.readSinglePlan(deliveryNumber);
@@ -78,21 +79,36 @@ public class DeliveryPlanResource extends AbstractAutoPaginatingResource<Deliver
         }
     }
 
-    private PageOf<DeliveryPlanItem> enablePagination(Collection<DeliveryPlanItem> items, PaginationSupport paginationSupport) {
+    private PageOf<DeliveryPlanItem> enablePagination(Collection<DeliveryPlanItem> items, PaginationSupport currentPageCoordinates) {
         addSelfRef(items);
-        PageOf<DeliveryPlanItem> pagination = new PageOf<DeliveryPlanItem>(items);
-        pagination.setPageNumber(paginationSupport.);
-        pagination.setTotalNumberOfElements(totalNumberOfElements);
+        PageOf<DeliveryPlanItem> currentPage = new PageOf<DeliveryPlanItem>(items);
+        currentPage.setPageNumber(currentPageCoordinates.currentPageNumber());
+        HttpEntity<PageOf<DeliveryPlanItem>> currentPageReference = getPageReference(currentPageCoordinates);
+        currentPage.add(linkTo(currentPageReference).withSelfRel());
 
-        addPagesRef(pagination);
-        return pagination;
+        addAdjacentPagesRef(currentPage, currentPageCoordinates);
+        return currentPage;
     }
 
-    private void addPagesRef(PageOf<DeliveryPlanItem> pagination) {
-        HttpEntity<PageOf<DeliveryPlanItem>> pageOfHttpEntity = methodOn(DeliveryPlanResource.class).listDeliveryPlans(pagination.getPageNumber(), pagination.getElementsOnPage(), "");
-        pagination.add(linkTo(pageOfHttpEntity).withSelfRel());
-        if (pagination.isNotFirstPage()) {
-            // add pages before
+    private HttpEntity<PageOf<DeliveryPlanItem>> getPageReference(PaginationSupport currentPageCoordinates) {
+        return methodOn(DeliveryPlanResource.class).listDeliveryPlans(currentPageCoordinates.currentPageNumber(), currentPageCoordinates.maximumNumberOfElements(), "");
+    }
+
+    private void addAdjacentPagesRef(PageOf<DeliveryPlanItem> currentPage, PaginationSupport paginationSupport) {
+        List<PaginationSupport> previous3 = paginationSupport.previousPages(3);
+        List<PaginationSupport> next3 = paginationSupport.nextPages(3);
+        addRelationship(currentPage, previous3, "previous");
+        addRelationship(currentPage, next3, "next");
+    }
+
+    private void addRelationship(PageOf<DeliveryPlanItem> currentPage, List<PaginationSupport> previous3, String hint) {
+        for(int i = 0; i < previous3.size(); i++) {
+            PaginationSupport adjacentPageCoordinates = previous3.get(i);
+            String relationship = hint ;
+            if(i > 0) {
+                relationship = relationship + "[" + (i+1) + "]";
+            }
+            currentPage.add(linkTo(getPageReference(adjacentPageCoordinates)).withRel(relationship));
         }
     }
 }

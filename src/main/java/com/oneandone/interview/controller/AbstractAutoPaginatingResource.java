@@ -14,7 +14,6 @@ public abstract class AbstractAutoPaginatingResource<Item extends ResourceSuppor
         addSelfRef(items);
         PageOf<Item> pagination = new PageOf<Item>(items);
         pagination.setPageNumber(pagNumber);
-        pagination.setTotalNumberOfElements(totalNumberOfElements);
 
         return pagination;
     }

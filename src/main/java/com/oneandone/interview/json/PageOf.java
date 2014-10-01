@@ -10,7 +10,6 @@ public class PageOf<Item extends ResourceSupport> extends ResourceSupport {
 
     private final int elementsOnPage;
     private int pageNumber;
-    private Long totalNumberOfElements;
     private final Collection<Item> items;
 
     public PageOf(Collection<Item> items) {
@@ -18,12 +17,14 @@ public class PageOf<Item extends ResourceSupport> extends ResourceSupport {
         elementsOnPage = this.items.size();
     }
 
-    public void setPageNumber(int pageNumber) {
+    public PageOf(int pageNumber, int elementsOnPage) {
         this.pageNumber = pageNumber;
+        this.elementsOnPage = elementsOnPage;
+        this.items = Collections.EMPTY_LIST;
     }
 
-    public void setTotalNumberOfElements(Long totalNumberOfElements) {
-        this.totalNumberOfElements = totalNumberOfElements;
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public int getElementsOnPage() {
@@ -32,10 +33,6 @@ public class PageOf<Item extends ResourceSupport> extends ResourceSupport {
 
     public int getPageNumber() {
         return pageNumber;
-    }
-
-    public Long getTotalNumberOfElements() {
-        return totalNumberOfElements;
     }
 
     public Collection<Item> getItems() {
