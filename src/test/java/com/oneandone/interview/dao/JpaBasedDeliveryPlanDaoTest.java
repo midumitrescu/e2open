@@ -13,7 +13,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:META-INF/test-applicationContext.xml")
-@ActiveProfiles("daoTest")
+@ActiveProfiles("daoTests")
 public class JpaBasedDeliveryPlanDaoTest {
 
     @Resource

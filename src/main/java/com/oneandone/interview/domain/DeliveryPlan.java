@@ -36,9 +36,9 @@ import java.util.Date;
 @Entity
 @Table(name = "delivery_plans")
 public class DeliveryPlan {
-    public static final String COUNT_ITEMS = "countAll";
-    public static final String FIND_ALL = "findAll";
-    public static final String FIND_BY_DELIVERY_NUMBER = "findByDeliveryNumber";
+    public static final String COUNT_ITEMS = "DeliveryPlan.countAll";
+    public static final String FIND_ALL = "DeliveryPlan.findAll";
+    public static final String FIND_BY_DELIVERY_NUMBER = "DeliveryPlan.findByDeliveryNumber";
     public static final String DELIVERY_NUMBER_PARAM_NAME = "deliveryNumber";
 
     @Id

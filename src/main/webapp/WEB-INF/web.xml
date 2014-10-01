@@ -4,8 +4,7 @@
     
     <display-name>mihaidumitrescu</display-name>
     
-    <description>Roo generated mihaidumitrescu application</description>
-
+    <description>generated mihaidumitrescu application</description>
     
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -48,7 +47,7 @@
     
     <!-- Handles Spring requests -->
     <servlet>
-        <servlet-name>mihaidumitrescu</servlet-name>
+        <servlet-name>deliveryPlansServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -58,7 +57,7 @@
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>mihaidumitrescu</servlet-name>
+        <servlet-name>deliveryPlansServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>

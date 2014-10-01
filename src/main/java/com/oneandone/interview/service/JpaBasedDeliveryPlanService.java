@@ -6,6 +6,7 @@ import com.oneandone.interview.json.DeliveryPlanItem;
 import com.oneandone.interview.utils.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,18 +23,21 @@ public class JpaBasedDeliveryPlanService implements DeliveryPlanService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<DeliveryPlanItem> readDeliveryPlans(PaginationInfo paginationInfo, String sortColumn) {
         List<DeliveryPlan> deliveryPlans = deliveryPlanDao.findDeliveryPlans(paginationInfo.firstElement(), paginationInfo.maximumNumberOfElements());
         return convertToDeliveryPlanItems(deliveryPlans);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DeliveryPlanItem readSinglePlan(Long deliveryPlanNumber) {
         DeliveryPlan singleDelivery = deliveryPlanDao.getSingleDeliveryPlanByNumber(deliveryPlanNumber);
         return new DeliveryPlanItem(singleDelivery);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long readDeliveryPlansNumber() {
         return deliveryPlanDao.countDeliveryPlans();
     }
