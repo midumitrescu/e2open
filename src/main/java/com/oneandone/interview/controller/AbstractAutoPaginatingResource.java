@@ -10,7 +10,7 @@ public abstract class AbstractAutoPaginatingResource<Item extends ResourceSuppor
 
     private int defaultPageSize;
 
-    private PageOf<Item> enablePagination(Collection<Item> items, int pagNumber, int totalNumberOfElements) {
+    private PageOf<Item> enablePagination(Collection<Item> items, int pagNumber, Long totalNumberOfElements) {
         addSelfRef(items);
         PageOf<Item> pagination = new PageOf<Item>(items);
         pagination.setPageNumber(pagNumber);
@@ -26,8 +26,11 @@ public abstract class AbstractAutoPaginatingResource<Item extends ResourceSuppor
         this.defaultPageSize = defaultPageSize;
     }
 
-    protected int getDefaultPageSize() {
+    protected int defaultPageSize() {
         return defaultPageSize;
     }
 
+    protected int idealPageSize(int input) {
+        return input < 1 ? defaultPageSize : input;
+    }
 }

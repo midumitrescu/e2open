@@ -1,6 +1,6 @@
 package com.oneandone.interview.utils;
 
-public class ImmutablePaginationSupport implements PaginationInfo {
+public class ImmutablePaginationSupport implements PaginationSupport {
 
     private final int pageNumber;
     private final int maxPageSize;

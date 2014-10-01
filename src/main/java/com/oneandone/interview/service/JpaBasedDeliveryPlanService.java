@@ -3,7 +3,7 @@ package com.oneandone.interview.service;
 import com.oneandone.interview.dao.JpaBasedDeliveryPlanDao;
 import com.oneandone.interview.domain.DeliveryPlan;
 import com.oneandone.interview.json.DeliveryPlanItem;
-import com.oneandone.interview.utils.PaginationInfo;
+import com.oneandone.interview.utils.PaginationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +24,8 @@ public class JpaBasedDeliveryPlanService implements DeliveryPlanService {
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<DeliveryPlanItem> readDeliveryPlans(PaginationInfo paginationInfo, String sortColumn) {
-        List<DeliveryPlan> deliveryPlans = deliveryPlanDao.findDeliveryPlans(paginationInfo.firstElement(), paginationInfo.maximumNumberOfElements());
+    public Collection<DeliveryPlanItem> readDeliveryPlans(PaginationSupport paginationSupport, String sortColumn) {
+        List<DeliveryPlan> deliveryPlans = deliveryPlanDao.findDeliveryPlans(paginationSupport.firstElement(), paginationSupport.maximumNumberOfElements());
         return convertToDeliveryPlanItems(deliveryPlans);
     }
 

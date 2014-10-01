@@ -7,7 +7,7 @@ public class PaginationTest {
 
     @Test(expected = AssertionError.class)
     public void testStupidInitialization_1() {
-       paginationBuilder().pageNumber(0).maxPageSize(0).totalNumberOfElements(10).build();
+        paginationBuilder().pageNumber(0).maxPageSize(0).totalNumberOfElements(10).build();
     }
 
     @Test(expected = AssertionError.class)
@@ -19,7 +19,7 @@ public class PaginationTest {
     public void testFirstElement_firstPageStartsFromZero() {
         ImmutablePaginationSupport firstPage = paginationBuilder().
           pageNumber(-1).maxPageSize(10).totalNumberOfElements(100).build();
-        Assert.assertEquals( 0, firstPage.firstElement());
+        Assert.assertEquals(0, firstPage.firstElement());
     }
 
     @Test

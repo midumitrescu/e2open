@@ -2,14 +2,15 @@ package com.oneandone.interview.json;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class PageOf<Item extends ResourceSupport> {
+public class PageOf<Item extends ResourceSupport> extends ResourceSupport {
 
     private final int elementsOnPage;
     private int pageNumber;
-    private int totalNumberOfElements;
+    private Long totalNumberOfElements;
     private final Collection<Item> items;
 
     public PageOf(Collection<Item> items) {
@@ -21,7 +22,7 @@ public class PageOf<Item extends ResourceSupport> {
         this.pageNumber = pageNumber;
     }
 
-    public void setTotalNumberOfElements(int totalNumberOfElements) {
+    public void setTotalNumberOfElements(Long totalNumberOfElements) {
         this.totalNumberOfElements = totalNumberOfElements;
     }
 
@@ -33,11 +34,11 @@ public class PageOf<Item extends ResourceSupport> {
         return pageNumber;
     }
 
-    public int getTotalNumberOfElements() {
+    public Long getTotalNumberOfElements() {
         return totalNumberOfElements;
     }
 
     public Collection<Item> getItems() {
-        return items;
+        return new ArrayList<Item>(items);
     }
 }
