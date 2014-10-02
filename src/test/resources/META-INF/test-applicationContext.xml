@@ -6,7 +6,7 @@
   <import resource="classpath*:META-INF/spring/applicationContext.xml"/>
 
     <beans profile="daoTests,webTests">
-        <context:property-placeholder location="classpath:META-INF/generalDao.properties"/>
+        <context:property-placeholder location="classpath*:META-INF/test*.properties" order="0"/>
         <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
             <property name="driverClassName" value="${database.driverClassName}"/>
             <property name="url" value="${database.url}"/>

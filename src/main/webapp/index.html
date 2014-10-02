@@ -1,10 +1,60 @@
 <html>
 <head>
-    <title>Hi!</title>
+    <title>E2Open-Interview Implementation</title>
+    <script data-main="scripts/main" src="javascript/jquery-1.11.1.min.js"></script>
+    <script data-main="scripts/main" src="javascript/jquery.dataTables.min.js"></script>
+    <script data-main="scripts/main" src="javascript/initDataTable.js"></script>
 </head>
 <body>
 
-First page!
+<table id="deliveryPlan" class="display" width="100%" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Delivery No</th>
+        <th>Part</th>
+        <th>Depot</th>
+        <th>Customer</th>
+        <th>Quantity</th>
+        <th>Due Date</th>
+        <th>Delivery Date</th>
+        <th>Margin</th>
+        <th>Currency</th>
+    </tr>
+    </thead>
 
+    <tfoot>
+    <tr>
+        <th>Delivery No</th>
+        <th>Part</th>
+        <th>Depot</th>
+        <th>Customer</th>
+        <th>Quantity</th>
+        <th>Due Date</th>
+        <th>Delivery Date</th>
+        <th>Margin</th>
+        <th>Currency</th>
+    </tr>
+    </tfoot>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#deliveryPlan').dataTable( {
+            "processing": true,
+            "ajax": "rest/deliveryPlans",
+            "`": [
+                { "items": "deliveryNumber" },
+                { "items": "part" },
+                { "items": "depot" },
+                { "items": "customer" },
+                { "items": "quantity" },
+                { "items": "dueDateYear" },
+                { "items": "deliveryDateDateYear" },
+                { "items": "margin" },
+                { "items": "currency" }
+            ]
+        } );
+    } );
+</script>
 </body>
 </html>
