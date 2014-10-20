@@ -1,7 +1,7 @@
-e2open
+Supply Chain 
 ======
 
-Made for the e2open Interview
+Made for experiencing Spring-Hateoas new framework, for a simple Supply Chain example.
 
 Please run with
 
